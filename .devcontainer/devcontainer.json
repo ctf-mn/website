@@ -19,7 +19,8 @@
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "bradlc.vscode-tailwindcss"
+        "bradlc.vscode-tailwindcss",
+        "charliermarsh.ruff"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspace/.venv/bin/python"

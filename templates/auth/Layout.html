@@ -13,6 +13,17 @@
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mb-6">
           {{ title }}
         </h1>
+        %for category, message in get_flashed_messages(with_categories=true)
+          %if category == 'error'
+            <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+              {{ message }}
+            </div>
+          %elif category == 'success'
+            <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+              {{ message }}
+            </div>
+          %endif
+        %endfor
         %block content
         %endblock
       </div>

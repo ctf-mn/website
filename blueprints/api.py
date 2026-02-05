@@ -9,7 +9,7 @@ bp = Blueprint('api', __name__)
 
 @bp.route('/api/contest-challenge', methods=['POST'])
 def api_contest_challenge():
-    if request.form.get('key') != 'ja5ooKae8quahr4ieFiobeecoo3shuok':
+    if request.form.get('key') != os.environ['API_CHALLENGE_KEY']:
         return abort(404)
 
     # validate

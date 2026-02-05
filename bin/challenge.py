@@ -113,7 +113,7 @@ def contest_description(challenge):
 
 def contest_send(data):
     url = 'https://ctf.mn/api/contest-challenge'
-    data['key'] = 'ja5ooKae8quahr4ieFiobeecoo3shuok'
+    data['key'] = os.environ['CTF_MN_API_KEY']
     r = httpx.post(url, data=data)
     open(Path(__file__).parent.joinpath('log.txt'), 'a').write(r.text + '\n\n')
     return r.text

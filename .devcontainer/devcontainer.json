@@ -20,7 +20,8 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "bradlc.vscode-tailwindcss",
-        "charliermarsh.ruff"
+        "charliermarsh.ruff",
+        "redhat.vscode-yaml"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspace/.venv/bin/python"

@@ -1,0 +1,107 @@
+%extends 'contest/Layout.html'
+
+%block card
+  <div class="border shadow  bg-white mt-4 p-4 rounded">
+    <div class="text-xl font-medium border-b pb-2 mb-2">
+      {{ challenge.title }}
+    </div>
+    <div class="text-slate-500 mb-4 flex justify-between">
+      <div>
+        <b>{{- g.category_dict[challenge.category] }}</b>
+        &middot;
+        <b>{{ challenge.author }}</b>
+      </div>
+      <div>
+        Solved: {{ challenge.solved_count }}
+        &middot;
+        Score: {{ challenge.score }}
+      </div>
+    </div>
+
+    <div data-page-content class="prose max-w-none">
+      {{ challenge.content.replace('[service]', g.contest_team.service) }}
+    </div>
+
+    %if solved
+      <div class="flex gap-4 items-center border-t pt-4 mt-4">
+        <div class="text-green-600">
+          Congratulations! Your team already solved this challenge.
+        </div>
+      </div>
+    %else
+      <Form>
+        <div class="border-t pt-4 mt-4">
+          %if status == 'correct'
+            <div class="mb-4 bg-teal-100 border border-teal-200 text-sm text-teal-800 rounded-lg p-4" role="alert">
+              <span class="font-bold">Correct!</span> Congratulations.
+            </div>
+          %else
+            %if status == 'incorrect'
+              <div class="mb-4 bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg p-4" role="alert">
+                <span class="font-bold">Incorrect!</span>. Try harder.
+              </div>
+            %elif status == 'brute_force_attempt'
+              <div class="mb-4 bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg p-4" role="alert">
+                <span class="font-bold">Brute force attempt detected!</span> Wait {{ wait.seconds }} seconds and try again.
+              </div>
+            %endif
+            <div class="flex gap-4 items-center">
+              <div class="grow">
+                <input type="text" name="flag" class="border text-sm rounded-lg block w-full py-2 px-3 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500" name="" value="" placeholder="Flag">
+              </div>
+              <button type="submit" name="action" value="flag" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                Submit flag
+              </button>
+            </div>
+          %endif
+        </div>
+      </Form>
+    %endif
+  </div>
+  <div class="border shadow  bg-white mt-4 rounded">
+    <table class="bg-white w-full rounded">
+      <thead>
+        <tr class="h-12 text-left bg-slate-50">
+          <th class="rounded-tl pl-3" style="width:150px">Solved at</th>
+          <th class="rounded-tr text-left" style="width:200px">Team</th>
+          <th class="rounded-tr text-left" style="width:200px">User</th>
+        </tr>
+      </thead>
+      <tbody>
+        %if contest.finish_at - timedelta(hours=1) < now < contest.finish_at
+          <tr class="border-t">
+            <td class="text-center h-12 text-gray-400 text-sm" colspan="3">
+              <span class="text-red-500">Scoreboard frozen.</span>
+            </td>
+          </tr>
+        %else
+          %for s in solved_teams
+            <tr class="h-12 border-t {{- ' bg-green-50' if s.status == 'CORRECT' }}">
+              <td class="pl-3 text-gray-500 text-sm {{- ' rounded-bl' if loop.last }}">
+                {{ (s.created_at + g.timezone_fix).strftime('%Y-%m-%d %H:%M') }}
+              </td>
+              <td>
+                <span class="font-medium">{{ s.team.title }}</span>
+              </td>
+              <td>
+                <a href="/user/{{ s.user.name }}" class="x-link">{{ s.user.name }}</a>
+              </td>
+            </tr>
+          %else
+            <tr class="border-t">
+              <td class="text-center h-12 text-gray-400 text-sm" colspan="3">
+                No one solved yet.
+              </td>
+            </tr>
+          %endfor
+        %endif
+      </tbody>
+    </table>
+  </div>
+%endblock
+
+%block bottom
+  <script>
+    $('[data-page-content]').html(marked.parse({{ challenge.content.replace('[service]', g.contest_team.service)|tojson }}))
+  </script>
+%endblock

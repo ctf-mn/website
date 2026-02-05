@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.x-link {
+  @apply text-blue-500 font-medium;
+  @apply hover:underline;
+}

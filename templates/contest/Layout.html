@@ -1,0 +1,162 @@
+%extends 'Layout.html'
+
+%block content
+  <div class="border shadow  bg-white mt-4 p-4 rounded">
+    <div class="flex justify-between border-b pb-2 mb-2">
+      <div class="text-xl font-medium">
+        {{ contest.title }}
+      </div>
+      <div class="text-gray-500">
+        {{ (contest.start_at + g.timezone_fix).strftime('%a, %b %d. %Y, %H:%M ULAT') }}
+        &mdash;
+        {{ (contest.finish_at + g.timezone_fix).strftime('%a, %b %d. %Y, %H:%M ULAT') }}
+      </div>
+    </div>
+    <div class="text-slate-500 mb-4 flex justify-between">
+      <div class="">
+        <a href="/contest/{{ contest.id }}" class="x-link">Scoreboard</a>
+        &middot;
+        <a href="/contest/{{ contest.id }}/challenge/list" class="x-link">Challenges</a>
+        &middot;
+        <a href="/contest/{{ contest.id }}/activity" class="x-link">Activity</a>
+        &middot;
+        <a href="/discord" class="x-link">Discord</a>
+        % if contest.id == 2
+          &middot;
+          %if now < contest.start_at
+            %set until_start = contest.start_at - now
+            Тэмцээн эхлэхэд <span class="text-green-600 font-medium">{{ until_start.seconds // 3600 }} цаг {{ until_start.seconds % 3600 // 60 }}</span> минут үлдлээ
+          %endif
+          %if contest.start_at < now < contest.finish_at
+            %set until_finish = contest.finish_at - now
+            Тэмцээн дуусахад <span class="text-red-600 font-medium">{{ until_finish.seconds // 3600 }} цаг {{ until_finish.seconds % 3600 // 60 }} минут</span> үлдсэн
+          %endif
+          %if contest.finish_at < now
+            Тэмцээн дууссан
+          %endif
+        % endif
+      </div>
+      <div>
+        %if g.user and g.contest_team
+          Team: <b class="text-black">{{ g.contest_team.title }}</b>
+        %else
+          {# <a href="/contest/{{ contest.id }}" class="x-link !text-orange-600">Register</a> #}
+        %endif
+      </div>
+    </div>
+    % if contest.id == 1
+      <div class="prose max-w-none">
+        <ul>
+          <li>Бүх даалгаврын хувьд флагийн формат нь: <code>CTFMN{...}</code> байна.</li>
+          <li>Dynamic scoring буюу олон баг бодсон даалгавар бага оноотой, цөөн баг бодсон даалгавар өндөр оноотой байна.</li>
+          <li>Тэмцээний үед флаг болон даалгаврын шийдэл, санааг бусдад өгөх, бусдаас авахыг хориглоно. Ийм тохиолдол илэрвэл тухайн багийн бүх оноог тэглэх хүртэл арга хэмжээ авна.</li>
+          <li>Тэмцээний сүүлийн 1 цагт scoreboard, activity хуудсууд хаалттай байна. Тэмцээн дуусмагц эргээд нээлттэй болно.</li>
+          <li>3 цагийн дараа буюу 15 цагт нэг ч баг флаг оруулаагүй даалгаврууд дээр чиглүүлэг (hint) орно.</li>
+        </ul>
+      </div>
+    % endif
+    % if contest.id == 2
+      <div class="prose max-w-none">
+        <ul>
+          <li>Бүх даалгаврын хувьд флагийн формат нь: <code>CTFMN{...}</code> байна.</li>
+          <li>Флагийг үе (round) дуусахаас өмнө илгээсэн тохиолдолд оноо авах боломжтой.</li>
+          <li>Үе бүр 5 минут, нийт 60 үе байна.</li>
+          <li>Үе бүрийн эхний 10 секундад service-г шинэчлэх (restart) тул ажиллахгүй байж болно.</li>
+          <li>Соорс код засварлах боломжтой даалгавар дээр засвар оруулсан кодноос болоод сервис (web, socket) хэвийн асаагүй тохиолдолд тухайн үед 300 оноогоор торгуулна.</li>
+          <li>Соорс кодыг үеийн турш хэдэн ч удаа засварлаж болно. Шинэ үе эхлэхэд хамгийн сүүлд хадгалснаар нь сервисд дуудаж ашиглана.</li>
+        </ul>
+
+        %if g.user and g.contest_team
+          <div class="mt-4 border border-red-300 rounded p-4 bg-red-50 gap-6">
+            Attack Defense platform: https://ctf-course-6c302f2fb613.herokuapp.com/
+            <br>
+            Багийн нууц үг: "{{ g.contest_team.service }}"
+          </div>
+        %endif
+      </div>
+    % endif
+    % if contest.id == 3
+      <div class="prose max-w-none">
+        <ul>
+          <li>Бүх даалгаврын хувьд флагийн формат нь: <code>CTFMN{...}</code> байна.</li>
+          <li>Dynamic scoring буюу олон баг бодсон даалгавар бага оноотой, цөөн баг бодсон даалгавар өндөр оноотой байна.</li>
+          <li>Тэмцээний үед флаг болон даалгаврын шийдэл, санааг бусдад өгөх, бусдаас авахыг хориглоно. Ийм тохиолдол илэрвэл тухайн багийн бүх оноог тэглэх хүртэл арга хэмжээ авна.</li>
+          <li>Тэмцээний сүүлийн 1 цагт scoreboard, activity хуудсууд хаалттай байна. Тэмцээн дуусмагц эргээд нээлттэй болно.</li>
+          <li>3 цагийн дараа буюу 15 цагт нэг ч баг флаг оруулаагүй даалгаврууд дээр чиглүүлэг (hint) орно.</li>
+        </ul>
+      </div>
+    % endif
+    % if contest.id == 4
+      <div class="prose max-w-none">
+        <ul>
+          <li>Бүх даалгаврын хувьд флагийн формат нь: <code>CTFMN{...}</code> байна.</li>
+          <li>Флагийг үе (round) дуусахаас өмнө илгээсэн тохиолдолд оноо авах боломжтой.</li>
+          <li>Үе бүр 5 минут, нийт 60 үе байна.</li>
+          <li>Үе бүрийн эхний 10 секундад service-г шинэчлэх (restart) тул ажиллахгүй байж болно.</li>
+          <li>Соорс код засварлах боломжтой даалгавар дээр засвар оруулсан кодноос болоод сервис (web, socket) хэвийн асаагүй тохиолдолд тухайн үед 300 оноогоор торгуулна.</li>
+          <li>Соорс кодыг үеийн турш хэдэн ч удаа засварлаж болно. Шинэ үе эхлэхэд хамгийн сүүлд хадгалснаар нь сервисд дуудаж ашиглана.</li>
+        </ul>
+
+        %if g.user and g.contest_team
+          <div class="mt-4 border border-red-300 rounded p-4 bg-red-50 gap-6">
+            Attack Defense platform: https://attack-defense-f5f2bf5a4fb3.herokuapp.com/
+            <br>
+            Багийн нууц үг: "{{ g.contest_team.service }}"
+          </div>
+        %endif
+      </div>
+    % endif
+    % if contest.id == 5
+      <div class="prose max-w-none">
+        <ul>
+          <li>Бүх даалгаврын хувьд флагийн формат нь: <code>CTFMN{...}</code> байна.</li>
+          <li>Dynamic scoring буюу олон баг бодсон даалгавар бага оноотой, цөөн баг бодсон даалгавар өндөр оноотой байна.</li>
+          <li>Тэмцээний үед флаг болон даалгаврын шийдэл, санааг бусдад өгөх, бусдаас авахыг хориглоно. Ийм тохиолдол илэрвэл тухайн багийн бүх оноог тэглэх хүртэл арга хэмжээ авна.</li>
+          <li>Тэмцээний сүүлийн 1 цагт scoreboard, activity хуудсууд хаалттай байна. Тэмцээн дуусмагц эргээд нээлттэй болно.</li>
+          <li>3 цагийн дараа буюу 15 цагт нэг ч баг флаг оруулаагүй даалгаврууд дээр чиглүүлэг (hint) орно.</li>
+        </ul>
+      </div>
+    % endif
+  </div>
+
+  % if contest.id == 5
+    <div class="border shadow  bg-white mt-4 rounded p-4">
+      <h1 class="text-center text-xl text-orange-500 mb-4"><b>Тэмцээнд бүртгүүлэх</b></h1>
+      <div class="prose max-w-none" data-markdown-content>
+        {{- '' -}}
+        5-р сарын 17-нд онлайнаар “**Jeopardy**” төрлөөр болно. Бүх хүнд нээлттэй.
+
+        Баг бүр 3 хүнтэй. Оролцох төлбөр нь багийн 60K.
+
+        **Тэмцээн болох хугацаа:**
+        5-р сарын 17-нд **14 цагаас 19** цаг хүртэл
+
+        **Шагнал**:
+        - 1-р байр: 360'000 төгрөг
+        - 2-р байр: 240'000 төгрөг
+        - 3-р байр: 120'000 төгрөг
+
+        Нэмэлт мэдээлэл тодруулах: <a href="/discord" class="x-link">Discord</a>
+      </div>
+      <Form action='/contest/'~contest.id>
+        <Input name="title" label="Багийн нэр" />
+        <div class="bg-yellow-100 mt-4 mb-4 border border-yellow-300 rounded p-4 text-sm">
+          <div class="font-bold text-yellow-900 mb-4">Төлбөр шилжүүлэх</div>
+          <div class="my-1"><span class="font-bold">Данс (IBAN):</span> MN16 0004000 453134783. Мөнхбаатар</div>
+          <div class="my-1"><span class="font-bold">Данс:</span> Худалдаа хөгжлийн банк. 453134783. Мөнхбаатар</div>
+          <div class="my-1"><span class="font-bold">Шилжүүлэх дүн:</span> 60’000 төгрөг</div>
+          <div class="my-1"><span class="font-bold">Гүйлгээний утга:</span> CTF, [багийн нэр]</div>
+        </div>
+        <div class="flex items-center mb-6">
+          <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" required>
+          <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900">Төлбөрийг шилжүүлсэн</label>
+        </div>
+
+        <Submit label="Бүртгүүлэх" />
+      </Form>
+    </div>
+  % endif
+
+  %block card
+  %endblock
+%endblock

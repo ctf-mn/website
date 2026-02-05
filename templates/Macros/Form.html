@@ -1,0 +1,6 @@
+%def action=''
+
+<form method="post" action="{{ action }}">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  {{ caller() }}
+</form>

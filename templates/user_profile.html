@@ -1,0 +1,45 @@
+%extends 'Layout.html'
+%set title = 'User: '~user.name
+
+%block content
+  <div class="flex justify-between items-center">
+    <h1 class="text-xl mt-4">User: <strong>{{ user.name }}</strong></h1>
+    <span class="mt-4 text-gray-500">
+      Solved: <strong>{{ user.solved_count }}</strong>.
+      Score: <strong>{{ user.scores }}</strong>
+    </span>
+  </div>
+
+  <div class="border shadow rounded mt-4">
+    <table class="bg-white w-full rounded">
+      <thead>
+        <tr class="h-12 text-left bg-slate-50">
+          <th class="rounded-tl pl-3" style="width:150px">Time</th>
+          <th class="text-left" style="">Challenge</th>
+          <th class="text-right pr-3" style="">Score</th>
+          <th class="rounded-tr text-center pr-3" style="width:100px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        %for s in submissions
+          <tr class="h-12 border-t {{- ' bg-green-50' if s.status == 'CORRECT' }}">
+            <td class="pl-3 text-gray-500 text-sm {{- ' rounded-bl' if loop.last }}">
+              {{ (s.created_at + g.timezone_fix).strftime('%Y-%m-%d %H:%M') }}
+            </td>
+            <td>
+              <a href="/challenge/{{ s.challenge_id }}" class="x-link {{- ' !text-green-600' if s.status == 'CORRECT' }}">
+                {{ challenges[s.challenge_id].title }}
+              </a>
+            </td>
+            <td class="text-right">
+              {{ challenges[s.challenge_id].score }}
+            </td>
+            <td class="text-center pr-3 text-sm {{- ' rounded-br' if loop.last }}">
+              <span class="text-green-600">Correct</span>
+            </td>
+          </tr>
+        %endfor
+      </tbody>
+    </table>
+  </div>
+%endblock

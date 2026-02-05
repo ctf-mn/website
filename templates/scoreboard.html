@@ -1,0 +1,98 @@
+%extends 'Layout.html'
+%set title = 'Scoreboard'
+
+%block content
+  <h1 class="text-xl font-semibold mt-4">Scoreboard</h1>
+  <div class="border shadow rounded mt-4">
+    <table class="bg-white w-full rounded">
+      <thead>
+        <tr class="h-12 text-left bg-slate-50">
+          <th class="rounded-tl pl-3" style="width:50px"></th>
+          <th class="text-left" style="">User</th>
+          <th class="text-right" style="width:100px">Solved</th>
+          <th class="rounded-tr text-right pr-3" style="width:100px">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        %for u in users
+          <tr class="h-12 border-t">
+            <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+              {{ loop.index + (page - 1) * per_page }}.
+            </td>
+            <td>
+              <a href="/user/{{ u.name }}" class="x-link">{{ u.name }}</a>
+            </td>
+            <td class="text-right text-sm">
+              {{ u.solved_count }}
+            </td>
+            <td class="text-right pr-3 text-sm {{- ' rounded-br' if loop.last }}">
+              {{ u.scores }}
+            </td>
+          </tr>
+        %endfor
+      </tbody>
+    </table>
+  </div>
+
+  {{ pagination(total_page, page, request_full_path) }}
+%endblock
+
+% macro pagination(total_page, page, request_full_path)
+  %if total_page > 1
+    %set base_url = request_full_path|safe
+    %set separator = '&'|safe if '?'|safe in base_url else '?'
+    %set cls_base = 'h-10 py-2 px-3 leading-tight border border-slate-300 '
+    %set cls_current = cls_base ~ 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700'
+    %set cls_regular = cls_base ~ 'text-slate-500 bg-white hover:bg-slate-100 hover:text-slate-700'
+    <nav class="m-6 flex justify-center items-center">
+      <div class="inline-flex items-center -space-x-px">
+        #:  Өмнөх
+        <a {{- ' href="%s%spage=%d"'|safe % (base_url, separator, page - 1) if page > 1 }}
+          class="h-10 block py-2 px-3 ml-0 leading-tight text-slate-500 bg-white rounded-l-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700">
+          Өмнөх
+        </a>#:endfold2
+        #:  Эхний хуудас
+        %if page > 4
+          <a href="{{ base_url }}{{ separator }}page=1" class="{{ cls_regular }}">
+            1
+          </a>
+        %  endif
+
+        #:  Өмнөх 3 хуудас
+        %if page > 5
+          <span class="{{ cls_base }} text-slate-500 bg-white">…</span>
+        %endif
+        %for p in range([page - 4, 0]|max + 1, page)
+          <a href="{{ base_url }}{{ separator }}page={{ p }}" class="{{ cls_regular }}">
+            {{ p }}
+          </a>
+        %  endfor
+        #:  Тухайн хуудас
+        <a href="{{ base_url }}{{ separator }}page={{ page }}" class="{{ cls_current }}">
+          {{ page }}
+        </a>#:endfold2
+        #:  Дараах 3 хуудас
+        %for p in range(page + 1, [page + 3, total_page]|min + 1)
+          <a href="{{ base_url }}{{ separator }}page={{ p }}" class="{{ cls_regular }}">
+            {{ p }}
+          </a>
+        %endfor
+        %if page + 4 < total_page
+          <span class="{{ cls_base }} text-slate-500 bg-white">…</span>
+        %  endif
+
+        #:  Сүүлийн хуудас
+        %if page + 4 <= total_page
+          <a href="{{ base_url }}{{ separator }}page={{ total_page }}" class="{{ cls_regular }}">
+            {{ total_page }}
+          </a>
+        %  endif
+        #:  Дараах
+        <a {{- ' href="%s%spage=%d"'|safe % (base_url, separator, page + 1) if page < total_page }}
+          class="h-10 block py-2 px-3 leading-tight text-slate-500 bg-white rounded-r-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700">
+          Дараах
+        </a>#:endfold2
+      </div>
+    </nav>
+  %endif
+% endmacro

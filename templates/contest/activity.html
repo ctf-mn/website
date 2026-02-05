@@ -1,0 +1,55 @@
+%extends 'contest/Layout.html'
+%set title = contest.title ~': Activity'
+
+%block card
+  <h1 class="text-xl font-semibold mt-4">Activity</h1>
+  <div class="border shadow rounded mt-4">
+    <table class="bg-white w-full rounded">
+      <thead>
+        <tr class="h-12 text-left bg-slate-50">
+          <th class="rounded-tl pl-3" style="width:150px">Time</th>
+          <th class="text-left" style="">Team, User</th>
+          <th class="text-left" style="">Challenge</th>
+          <th class="rounded-tr text-center pr-3" style="width:100px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        %if contest.finish_at - timedelta(hours=1) < now < contest.finish_at
+          <tr class="border-t">
+            <td class="text-center h-12 text-gray-400 text-sm" colspan="4">
+              <span class="text-red-500">Scoreboard frozen.</span>
+            </td>
+          </tr>
+        %else
+          %for s in submissions
+            <tr class="h-12 border-t {{- ' bg-green-50' if s.status == 'CORRECT' }}">
+              <td class="pl-3 text-gray-500 text-sm {{- ' rounded-bl' if loop.last }}">
+                {{ (s.created_at + g.timezone_fix).strftime('%Y-%m-%d %H:%M') }}
+              </td>
+              <td>
+                <span class="font-medium">{{ teams[s.team_id] }}</span>
+                ({{ users[s.user_id] }})
+              </td>
+              <td>
+                <a href="/contest/{{ contest_id }}/challenge/{{ s.challenge_id }}" class="x-link {{- ' !text-green-600' if s.status == 'CORRECT' }}">
+                  {{ challenges[s.challenge_id] }}
+                </a>
+              </td>
+              <td class="text-center pr-3 text-sm {{- ' rounded-br' if loop.last }}">
+                %if s.status == 'CORRECT'
+                  <span class="text-green-600">Correct</span>
+                %else
+                  <span class="text-red-600">Incorrect</span>
+                %endif
+              </td>
+            </tr>
+          %else
+            <tr class="h-12 border-t">
+              <td colspan="4" class="text-sm text-gray-500 text-center">No solves yet</td>
+            </tr>
+          %endfor
+        %endif
+      </tbody>
+    </table>
+  </div>
+%endblock

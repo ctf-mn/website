@@ -1,0 +1,73 @@
+%import 'Macros.html' as ui with context
+<!doctype html>
+<html class="bg-gray-100">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/css/tailwind.css">
+  <style>
+    .prose p {
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+  <header class="bg-white border-b py-3 h-16">#:1
+    <div class="max-w-5xl mx-auto w-full h-full flex items-center justify-between  px-4">
+      <a class="text-xl font-semibold" href="/">CTF.mn</a>
+      <div class="flex gap-5">
+        {#
+        <a class="x-link !text-orange-600" href="/contest/5">
+          Contest
+        </a>
+        #}
+        <a class="x-link" href="/challenge/list">Challenges</a>
+        <a class="x-link" href="/scoreboard">Scoreboard</a>
+        <a class="x-link" href="/activity">Activity</a>
+        &middot;
+        %if session['user']
+          <span>
+            <span class="text-gray-500">Welcome</span>
+            <span class="font-semibold">{{ g.user.name }}</span>
+          </span>
+          <Form action='/logout'>
+            <button class="x-link" type="submit">Logout</button>
+          </Form>
+        %else
+          <a class="x-link" href="/login">Login</a>
+          <a class="x-link" href="/register">Register</a>
+        %endif
+      </div>
+    </div>
+  </header>#:endfold
+
+  <div class="max-w-5xl w-full mx-auto mb-4 px-4">
+    %block content
+    %endblock
+  </div>
+
+  <script src="/static/js/jquery-v3.7.0.min.js"></script>
+  <script src="/static/js/marked-v12.0.2.min.js"></script>
+  <script>
+    $(function() {
+      if ($('[data-markdown-content]').length && $('[data-markdown-content]').prop('data-markdown-content') !== false) {
+        let content = $('[data-markdown-content]').html()
+        while (content.includes('\n  ')) {
+          content = content.replace('\n  ', '\n')
+        }
+        $('[data-markdown-content]').html(marked.parse(content))
+        $('[data-markdown-content]').prop('data-markdown-content', true)
+      }
+      $('form').on('submit', (e) => {
+        if ($(e.currentTarget).data('submitting') === true) {
+          e.preventDefault()
+          return
+        }
+        $(e.currentTarget).data('submitting', true)
+      })
+    })
+  </script>
+  %block bottom
+  %endblock
+</body>
+</html>

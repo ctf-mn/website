@@ -1,0 +1,16 @@
+%extends 'auth/Layout.html'
+%set title = 'Бүртгүүлэх'
+
+%block content
+  <Form>
+    <Input name="name" label="Нэр" type="text" error value />
+    <Input name="email" label="Имэйл" type="email" error value />
+    <Input name="password" label="Нууц үг" type="password" error />
+    <Input name="password_again" label="Нууц үг давтах" type="password" error />
+    <Submit label="Бүртгүүлэх" />
+
+    <p class="mt-6 text-sm font-light text-gray-500 dark:text-gray-400">
+      Бүртгэлтэй юу? <a href="/login" class="font-medium text-blue-600 hover:underline">Нэвтрэх</a>
+    </p>
+  </Form>
+%endblock

@@ -1,0 +1,120 @@
+%extends 'Layout.html'
+%set title = 'Challenges'
+
+%block content
+  <form method="get" class="mt-4 flex gap-4 justify-start">
+    #: Category
+    <div class="flex shadow rounded border bg-slate-100 h-12">
+      <label for="input-category" class="flex items-center px-3 font-semibold">
+        Category
+      </label>
+      <select id="input-category" name="category" class="py-1 px-4 pe-9 block w-full rounded-r border-transparent focus:border-blue-500 focus:ring-blue-500">
+        %set _category = request.args.get('category')
+        <option {{- ' selected' if _category in ['all', none] }} value="all">All</option>
+        %for _value, _title in g.category_list
+          <option {{- ' selected' if _category == _value }} value="{{ _value }}">{{ _title }}</option>
+        %endfor
+      </select>
+    </div>
+    #: Event
+    <div class="flex shadow rounded border bg-slate-100">
+      <label for="input-event" class="flex shrink-0 items-center px-3 font-semibold">
+        Event, Contest
+      </label>
+      <select id="input-event" name="event" class="py-1 px-4 pe-9 block w-full rounded-r border-transparent focus:border-blue-500 focus:ring-blue-500">
+        %set _event = request.args.get('event')
+        <option {{- ' selected' if _event in ['all', none] }} value="all">All</option>
+        %for _value, _title in g.event_list
+          <option {{- ' selected' if _event == _value }} value="{{ _value }}">{{ _title }}</option>
+        %endfor
+      </select>
+    </div>
+    #:endfold
+    #: Status
+    %if g.user
+      <div class="flex shadow rounded border bg-slate-100">
+        <label for="input-status" class="flex shrink-0 items-center px-3 font-semibold">
+          Status
+        </label>
+        <select id="input-status" name="status" class="py-1 px-4 pe-9 block w-full rounded-r border-transparent focus:border-blue-500 focus:ring-blue-500">
+          %set _status = request.args.get('status')
+          <option {{- ' selected' if _status == ['', none] }} value="all">All</option>
+          <option {{- ' selected' if _status in ['solved'] }} value="solved">Solved</option>
+          <option {{- ' selected' if _status in ['not-solved'] }} value="not-solved">Not solved</option>
+        </select>
+      </div>
+    %endif
+    #:endfold
+  </form>
+  #: Challenges
+  <div class="border shadow rounded mt-4">
+    <table class="bg-white w-full rounded">
+      <thead>
+        <tr class="h-12 text-left bg-slate-50">
+          <th class="rounded-tl pl-3" style="width:50px"></th>
+          <th class="text-left">Challenge</th>
+          <th class="text-left" style="width:200px">Category</th>
+          <th class="text-left" style="width:100px">Author</th>
+          <th class="text-right" style="width:100px">Solved</th>
+          <th class="rounded-tr text-right pr-3" style="width:100px">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        %set idx = []
+        %for c in challenges
+          %if g.user and status == 'solved' and c.id not in solved
+            %continue
+          %endif
+          %if g.user and status == 'not-solved' and c.id in solved
+            %continue
+          %endif
+          %do idx.append(1)
+          <tr class="h-12 border-t {{- ' bg-green-50' if c.id in solved }}">
+            <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+              {{ idx|length }}.
+            </td>
+            <td class="">
+              <a class="x-link {{- ' !text-green-600' if c.id in solved }}" href="/challenge/{{ c.id }}">
+                {{ c.title }}
+              </a>
+            </td>
+            <td class="text-left">
+              {{ g.category_dict[c.category] }}
+            </td>
+            <td class="text-left">
+              <a href="/author/{{ c.author }}" class="x-link">
+                {{ c.author }}
+              </a>
+            </td>
+            <td class="text-right">
+              {{ c.solved_count }}
+            </td>
+            <td class="text-right pr-3 {{- ' rounded-br' if loop.last }}">
+              {{ c.score }}
+            </td>
+          </tr>
+        %endfor
+      </tbody>
+    </table>
+  </div>
+  #:endfold
+%endblock
+
+%block bottom
+  <script>
+    $(function() {
+      $('#input-category').on('change', function(event) {
+        let $form = $(event.currentTarget).closest('form')
+        $form.submit()
+      })
+      $('#input-event').on('change', function(event) {
+        let $form = $(event.currentTarget).closest('form')
+        $form.submit()
+      })
+      $('#input-status').on('change', function(event) {
+        let $form = $(event.currentTarget).closest('form')
+        $form.submit()
+      })
+    })
+  </script>
+%endblock

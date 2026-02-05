@@ -1,0 +1,54 @@
+%extends 'contest/Layout.html'
+%set title = contest.title ~': Challenges'
+
+%block card
+  <h1 class="text-xl font-semibold mt-4">Challenges</h1>
+  <div class="border shadow rounded mt-4">
+    <table class="bg-white w-full rounded">
+      <thead>
+        <tr class="h-12 text-left bg-slate-50">
+          <th class="rounded-tl pl-3" style="width:50px"></th>
+          <th class="text-left">Challenge</th>
+          <th class="text-left" style="width:200px">Category</th>
+          <th class="text-right" style="width:100px">Solved</th>
+          <th class="rounded-tr text-right pr-3" style="width:100px">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        %set idx = []
+        %for c in challenges
+          %do idx.append(1)
+          <tr class="h-12 border-t {{- ' bg-green-50' if c.id in solved }}">
+            <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+              {{ idx|length }}.
+            </td>
+            <td class="">
+              %if g.contest_team
+                <a class="x-link {{- ' !text-green-600' if c.id in solved }}" href="/contest/{{ contest_id }}/challenge/{{ c.id }}">
+                  {{ c.title }}
+                </a>
+              %else
+                <span class="font-medium">{{ c.title }}</span>
+              %endif
+            </td>
+            <td class="text-left">
+              {{ g.category_dict[c.category] }}
+            </td>
+            <td class="text-right">
+              {{ c.solved_count }}
+            </td>
+            <td class="text-right pr-3 {{- ' rounded-br' if loop.last }}">
+              {{ c.score }}
+            </td>
+          </tr>
+        %else
+          <tr class="h-12 border-t">
+            <td colspan="5" class="text-sm text-center text-gray-500">
+              Will be released when contest started
+            </td>
+          </tr>
+        %endfor
+      </tbody>
+    </table>
+  </div>
+%endblock

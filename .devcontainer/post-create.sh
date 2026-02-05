@@ -2,6 +2,8 @@
 set -e
 
 uv tool install invoke
+uv tool install ruff
+
 uv sync --group local
 npm install -g tailwindcss
 

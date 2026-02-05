@@ -1,8 +1,9 @@
 import os
 import re
 
-import models as db
 from werkzeug.security import generate_password_hash
+
+import models as db
 
 
 def _csrf_token(response):

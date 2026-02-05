@@ -11,6 +11,7 @@ from blueprints.auth import bp as auth_bp
 from blueprints.challenges import bp as challenges_bp
 from blueprints.contests import bp as contests_bp
 from blueprints.core import bp as core_bp
+from blueprints.discord import bp as discord_bp
 from utils import utcnow
 
 app = Flask(__name__)
@@ -30,6 +31,7 @@ app.register_blueprint(core_bp)
 app.register_blueprint(challenges_bp)
 app.register_blueprint(contests_bp)
 app.register_blueprint(api_bp)
+app.register_blueprint(discord_bp)
 
 #1 before first request
 with app.app_context():

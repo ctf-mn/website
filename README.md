@@ -1,14 +1,8 @@
-# .env
+# Dev environment
 
-```
-FLASK_APP=web.py
-FLASK_DEBUG=1
-FLASK_RUN_PORT=8000
-SECRET_KEY=secret_key_for_session_encryption_long_is_better
-DATABASE_URL=postgres:///ctf_mn
-```
+## Setup without Dev Containers
 
-# Setup
+You will need to configure .env file with environment variables, please refer to `.env.example`.
 
 ```
 pip install invoke
@@ -16,8 +10,6 @@ pip install -r requirements.txt
 npm install -g tailwindcss
 invoke run
 ```
-
-# Dev environment
 
 This repo includes a Dev Containers setup in `.devcontainer/`
 

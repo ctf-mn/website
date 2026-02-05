@@ -8,6 +8,7 @@ from pathlib import Path
 import httpx
 import yaml
 
+
 def parse():
     if len(sys.argv) < 2:
         print('Usage: python challenge.py path/to/challenge.yml')

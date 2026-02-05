@@ -87,7 +87,7 @@ def before_request():
                 .where(db.ContestTeam.contest_id == g.contest.id)\
                 .where(db.ContestTeam.members.contains(f'|{g.user.name}|'))\
                 .get_or_none()
-        except db.Contest.DoesNotExist as e:
+        except db.Contest.DoesNotExist:
             pass
     else:
         g.user = None

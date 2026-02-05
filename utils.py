@@ -1,5 +1,5 @@
-from datetime import UTC, datetime
 import re
+from datetime import UTC, datetime
 
 from jinja2.ext import Extension
 

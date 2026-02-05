@@ -1,7 +1,8 @@
 import os
-from playhouse.db_url import connect
-from playhouse.migrate import migrate, PostgresqlMigrator
+
 from peewee import TextField
+from playhouse.db_url import connect
+from playhouse.migrate import PostgresqlMigrator, migrate
 
 database = connect(os.environ['DATABASE_URL'])
 migrator = PostgresqlMigrator(database)

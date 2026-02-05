@@ -30,6 +30,10 @@
             <span class="text-gray-500">Welcome</span>
             <span class="font-semibold">{{ g.user.name }}</span>
           </span>
+          %if not g.user.discord_user_id
+            &middot;
+            <a class="x-link" href="/link/discord">Link Discord</a>
+          %endif
           <Form action='/logout'>
             <button class="x-link" type="submit">Logout</button>
           </Form>

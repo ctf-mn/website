@@ -11,8 +11,12 @@ services:
     env_file:
       - .env
     environment:
+      - FLASK_APP=web.py
+      - FLASK_DEBUG=1
+      - SESSION_KEY=dev_session_key_change_in_production
       - FLASK_RUN_HOST=0.0.0.0
       - FLASK_RUN_PORT=${FLASK_RUN_PORT:-8000}
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/ctf_mn
 
   db:
     image: postgres:16

@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, g, redirect, render_template, request
+from flask import Blueprint, abort, g, redirect, render_template, request  # noqa: F401
 
 import models as db
 

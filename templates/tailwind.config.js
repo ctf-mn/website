@@ -22,8 +22,9 @@ module.exports = {
       // fontFamily: {
       //   sans: ['Roboto', ...defaultTheme.fontFamily.sans],
       // },
-      // colors: {
-      // },
+      colors: {
+        discord: '#5865F2'
+      },
     },
   },
 }

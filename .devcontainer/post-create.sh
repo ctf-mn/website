@@ -5,7 +5,7 @@ uv tool install invoke
 uv tool install ruff
 
 uv sync --group local
-npm install -g tailwindcss
+npm install
 
 echo "You are good to go! 🎉"
 echo "You can run the following command to start the development server:"

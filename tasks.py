@@ -4,8 +4,7 @@ from invoke import task
 @task
 def run(c):
     "Run web server on local machine"
-    c.run('tailwindcss -i web.css -o static/css/tailwind.css --watch', asynchronous=True)
-    c.run('tailwindcss '
+    c.run('npx tailwindcss '
           '-c templates/tailwind.config.js '
           '-i templates/tailwind.css '
           '-o static/css/tailwind.css -w', asynchronous=True)
@@ -27,4 +26,4 @@ def deploy(c):
 # other
 @task
 def css(c):
-    c.run('tailwindcss -i templates/tailwind.css -o static/css/tailwind.css')
+    c.run('npx tailwindcss -c templates/tailwind.config.js -i templates/tailwind.css -o static/css/tailwind.css')

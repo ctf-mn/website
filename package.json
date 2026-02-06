@@ -1,4 +1,6 @@
 {
+  "name": "ctf-mn",
+  "private": true,
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",

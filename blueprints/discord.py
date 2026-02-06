@@ -15,6 +15,10 @@ DISCORD_USER_URL = 'https://discord.com/api/v10/users/@me'
 
 DISCORD_CLIENT_ID = os.environ['DISCORD_CLIENT_ID']
 DISCORD_CLIENT_SECRET = os.environ['DISCORD_CLIENT_SECRET']
+DISCORD_BOT_TOKEN = os.environ['DISCORD_BOT_TOKEN']
+
+DISCORD_STAGING_GUILD_ID = "1469256807246594282"
+DISCORD_ROLE_ID = "1469267201797132307"
 
 
 @bp.route('/link/discord')
@@ -96,5 +100,13 @@ def link_discord_callback():
     g.user.discord_user_id = discord_user_id
     g.user.save()
 
-    flash('Linked a Discord account successfully!', 'success')
+    res = requests.put(
+        f'https://discord.com/api/v10/guilds/{DISCORD_STAGING_GUILD_ID}/members/{discord_user_id}/roles/{DISCORD_ROLE_ID}',
+        headers={'Authorization': f'Bot {DISCORD_BOT_TOKEN}'}
+    )
+    if res.status_code == 204:
+        flash('Linked a Discord account successfully!', 'success')
+    else:
+        flash(f'Failed to assign a Discord role: {res.status_code} {res.text}', 'error')
+
     return redirect('/')

@@ -21,6 +21,7 @@ class User(Model):
     name = peewee.CharField()
     email = peewee.CharField()
     password = peewee.CharField()
+    discord_user_id = peewee.CharField(null=True)
     scores = peewee.IntegerField()
     solved_count = peewee.IntegerField()
 

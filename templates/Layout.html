@@ -30,6 +30,10 @@
             <span class="text-gray-500">Welcome</span>
             <span class="font-semibold">{{ g.user.name }}</span>
           </span>
+          %if not g.user.discord_user_id
+            &middot;
+            <a class="x-link" href="/link/discord">Link Discord</a>
+          %endif
           <Form action='/logout'>
             <button class="x-link" type="submit">Logout</button>
           </Form>
@@ -42,6 +46,27 @@
   </header>#:endfold
 
   <div class="max-w-5xl w-full mx-auto mb-4 px-4">
+    %with messages = get_flashed_messages(with_categories=true)
+      %if messages
+        %for category, message in messages
+          %if category == 'error'
+            <div class="flex items-center p-4 mt-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+              <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <div>{{ message }}</div>
+            </div>
+          %else
+            <div class="flex items-center p-4 mt-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+              <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+              </svg>
+              <div>{{ message }}</div>
+            </div>
+          %endif
+        %endfor
+      %endif
+    %endwith
     %block content
     %endblock
   </div>

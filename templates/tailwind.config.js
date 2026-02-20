@@ -4,6 +4,12 @@ const path = require('child_process').execSync('npm -g root').toString().trim() 
 const defaultTheme = require(path + 'tailwindcss/defaultTheme')
 
 module.exports = {
+  darkMode: 'class',
+  safelist: [
+    {
+      pattern: /^(?:dark:)?(?:hover:|focus:)?(?:bg|text|border|ring)-slate-(?:50|100|200|300|400|500|600|700|800|900)(?:\/(?:25|30|50))?$/,
+    },
+  ],
   content: [
     'templates/**/*.{html,js}',
     'views/**/*.{html,js}',

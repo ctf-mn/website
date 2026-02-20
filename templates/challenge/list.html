@@ -3,54 +3,59 @@
 
 %block content
   <form method="get" class="mt-4 flex gap-4 justify-start">
+  %set cls_select = 'py-1 px-4 pe-9 block w-full rounded-r bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-transparent focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400'
+  %set cls_option = 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100'
+
     #: Category
-    <div class="flex shadow rounded border bg-slate-100 h-12">
-      <label for="input-category" class="flex items-center px-3 font-semibold">
+    <div class="flex shadow rounded border dark:border-slate-700 bg-slate-100 dark:bg-slate-800 h-12">
+      <label for="input-category" class="flex items-center px-3 font-semibold text-slate-700 dark:text-slate-200">
         Category
       </label>
-      <select id="input-category" name="category" class="py-1 px-4 pe-9 block w-full rounded-r border-transparent focus:border-blue-500 focus:ring-blue-500">
+      <select id="input-category" name="category" class="{{ cls_select }}">
         %set _category = request.args.get('category')
-        <option {{- ' selected' if _category in ['all', none] }} value="all">All</option>
+        <option class="{{ cls_option }}" {{- ' selected' if _category in ['all', none] }} value="all">All</option>
         %for _value, _title in g.category_list
-          <option {{- ' selected' if _category == _value }} value="{{ _value }}">{{ _title }}</option>
+          <option class="{{ cls_option }}" {{- ' selected' if _category == _value }} value="{{ _value }}">{{ _title }}</option>
         %endfor
       </select>
     </div>
     #: Event
-    <div class="flex shadow rounded border bg-slate-100">
-      <label for="input-event" class="flex shrink-0 items-center px-3 font-semibold">
+    <div class="flex shadow rounded border dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
+      <label for="input-event" class="flex shrink-0 items-center px-3 font-semibold text-slate-700 dark:text-slate-200">
         Event, Contest
       </label>
-      <select id="input-event" name="event" class="py-1 px-4 pe-9 block w-full rounded-r border-transparent focus:border-blue-500 focus:ring-blue-500">
+      <select id="input-event" name="event" class="{{ cls_select }}">
         %set _event = request.args.get('event')
-        <option {{- ' selected' if _event in ['all', none] }} value="all">All</option>
+        <option class="{{ cls_option }}" {{- ' selected' if _event in ['all', none] }} value="all">All</option>
         %for _value, _title in g.event_list
-          <option {{- ' selected' if _event == _value }} value="{{ _value }}">{{ _title }}</option>
+          <option class="{{ cls_option }}" {{- ' selected' if _event == _value }} value="{{ _value }}">{{ _title }}</option>
         %endfor
       </select>
     </div>
     #:endfold
     #: Status
     %if g.user
-      <div class="flex shadow rounded border bg-slate-100">
+      <div class="flex shadow rounded border dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
         <label for="input-status" class="flex shrink-0 items-center px-3 font-semibold">
-          Status
+          <span class="text-slate-700 dark:text-slate-200">
+            Status
+          </span>
         </label>
-        <select id="input-status" name="status" class="py-1 px-4 pe-9 block w-full rounded-r border-transparent focus:border-blue-500 focus:ring-blue-500">
+        <select id="input-status" name="status" class="{{ cls_select }}">
           %set _status = request.args.get('status')
-          <option {{- ' selected' if _status == ['', none] }} value="all">All</option>
-          <option {{- ' selected' if _status in ['solved'] }} value="solved">Solved</option>
-          <option {{- ' selected' if _status in ['not-solved'] }} value="not-solved">Not solved</option>
+          <option class="{{ cls_option }}" {{- ' selected' if _status == ['', none] }} value="all">All</option>
+          <option class="{{ cls_option }}" {{- ' selected' if _status in ['solved'] }} value="solved">Solved</option>
+          <option class="{{ cls_option }}" {{- ' selected' if _status in ['not-solved'] }} value="not-solved">Not solved</option>
         </select>
       </div>
     %endif
     #:endfold
   </form>
   #: Challenges
-  <div class="border shadow rounded mt-4">
-    <table class="bg-white w-full rounded">
+  <div class="border dark:border-slate-700 shadow rounded mt-4">
+    <table class="bg-white dark:bg-slate-800 w-full rounded">
       <thead>
-        <tr class="h-12 text-left bg-slate-50">
+        <tr class="h-12 text-left bg-slate-50 dark:bg-slate-800">
           <th class="rounded-tl pl-3" style="width:50px"></th>
           <th class="text-left">Challenge</th>
           <th class="text-left" style="width:200px">Category</th>
@@ -69,12 +74,12 @@
             %continue
           %endif
           %do idx.append(1)
-          <tr class="h-12 border-t {{- ' bg-green-50' if c.id in solved }}">
-            <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+          <tr class="h-12 border-t dark:border-slate-700 {{- ' bg-green-50 dark:bg-green-900/30' if c.id in solved }}">
+            <td class="pl-3 pr-3 text-right text-gray-500 dark:text-slate-300 {{- ' rounded-bl' if loop.last }}">
               {{ idx|length }}.
             </td>
             <td class="">
-              <a class="x-link {{- ' !text-green-600' if c.id in solved }}" href="/challenge/{{ c.id }}">
+              <a class="x-link {{- ' text-green-600 dark:text-green-300' if c.id in solved }}" href="/challenge/{{ c.id }}">
                 {{ c.title }}
               </a>
             </td>

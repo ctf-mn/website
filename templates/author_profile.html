@@ -6,10 +6,10 @@
     <h1 class="text-xl mt-4">Author: <strong>{{ name }}</strong></h1>
   </div>
 
-  <div class="border shadow rounded mt-4">
-    <table class="bg-white w-full rounded">
+  <div class="border dark:border-slate-700 shadow rounded mt-4">
+    <table class="bg-white dark:bg-slate-800 w-full rounded">
       <thead>
-        <tr class="h-12 text-left bg-slate-50">
+        <tr class="h-12 text-left bg-slate-50 dark:bg-slate-800">
           <th class="rounded-tl pl-3" style="width:50px"></th>
           <th class="text-left" style="">Challenge</th>
           <th class="text-left" style="width:170px">Category</th>
@@ -20,8 +20,8 @@
       </thead>
       <tbody>
         %for challenge in challenges
-          <tr class="h-12 border-t">
-            <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+          <tr class="h-12 border-t dark:border-slate-700">
+            <td class="pl-3 pr-3 text-right text-gray-500 dark:text-slate-300 {{- ' rounded-bl' if loop.last }}">
               {{ loop.index }}.
             </td>
             <td>

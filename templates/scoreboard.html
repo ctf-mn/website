@@ -3,10 +3,10 @@
 
 %block content
   <h1 class="text-xl font-semibold mt-4">Scoreboard</h1>
-  <div class="border shadow rounded mt-4">
-    <table class="bg-white w-full rounded">
+  <div class="border dark:border-slate-700 shadow rounded mt-4">
+    <table class="bg-white dark:bg-slate-800 w-full rounded">
       <thead>
-        <tr class="h-12 text-left bg-slate-50">
+        <tr class="h-12 text-left bg-slate-50 dark:bg-slate-800">
           <th class="rounded-tl pl-3" style="width:50px"></th>
           <th class="text-left" style="">User</th>
           <th class="text-right" style="width:100px">Solved</th>
@@ -15,8 +15,8 @@
       </thead>
       <tbody>
         %for u in users
-          <tr class="h-12 border-t">
-            <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+          <tr class="h-12 border-t dark:border-slate-700">
+            <td class="pl-3 pr-3 text-right text-gray-500 dark:text-slate-300 {{- ' rounded-bl' if loop.last }}">
               {{ loop.index + (page - 1) * per_page }}.
             </td>
             <td>
@@ -41,14 +41,14 @@
   %if total_page > 1
     %set base_url = request_full_path|safe
     %set separator = '&'|safe if '?'|safe in base_url else '?'
-    %set cls_base = 'h-10 py-2 px-3 leading-tight border border-slate-300 '
-    %set cls_current = cls_base ~ 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700'
-    %set cls_regular = cls_base ~ 'text-slate-500 bg-white hover:bg-slate-100 hover:text-slate-700'
+  %set cls_base = 'h-10 py-2 px-3 leading-tight border border-slate-300 dark:border-slate-700 '
+  %set cls_current = cls_base ~ 'text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-500 hover:text-blue-700 dark:hover:text-blue-300'
+  %set cls_regular = cls_base ~ 'text-slate-500 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-slate-300'
     <nav class="m-6 flex justify-center items-center">
       <div class="inline-flex items-center -space-x-px">
         #:  Өмнөх
         <a {{- ' href="%s%spage=%d"'|safe % (base_url, separator, page - 1) if page > 1 }}
-          class="h-10 block py-2 px-3 ml-0 leading-tight text-slate-500 bg-white rounded-l-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700">
+          class="h-10 block py-2 px-3 ml-0 leading-tight text-slate-500 dark:text-slate-300 bg-white dark:bg-slate-800 rounded-l-lg border dark:border-slate-700 border-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-slate-300">
           Өмнөх
         </a>#:endfold2
         #:  Эхний хуудас
@@ -60,7 +60,7 @@
 
         #:  Өмнөх 3 хуудас
         %if page > 5
-          <span class="{{ cls_base }} text-slate-500 bg-white">…</span>
+          <span class="{{ cls_base }} text-slate-500 dark:text-slate-300 bg-white dark:bg-slate-800">…</span>
         %endif
         %for p in range([page - 4, 0]|max + 1, page)
           <a href="{{ base_url }}{{ separator }}page={{ p }}" class="{{ cls_regular }}">
@@ -78,7 +78,7 @@
           </a>
         %endfor
         %if page + 4 < total_page
-          <span class="{{ cls_base }} text-slate-500 bg-white">…</span>
+          <span class="{{ cls_base }} text-slate-500 dark:text-slate-300 bg-white dark:bg-slate-800">…</span>
         %  endif
 
         #:  Сүүлийн хуудас
@@ -89,7 +89,7 @@
         %  endif
         #:  Дараах
         <a {{- ' href="%s%spage=%d"'|safe % (base_url, separator, page + 1) if page < total_page }}
-          class="h-10 block py-2 px-3 leading-tight text-slate-500 bg-white rounded-r-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700">
+          class="h-10 block py-2 px-3 leading-tight text-slate-500 dark:text-slate-300 bg-white dark:bg-slate-800 rounded-r-lg border dark:border-slate-700 border-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-slate-300">
           Дараах
         </a>#:endfold2
       </div>

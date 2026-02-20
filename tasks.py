@@ -27,4 +27,4 @@ def deploy(c):
 # other
 @task
 def css(c):
-    c.run('tailwindcss -i templates/tailwind.css -o static/css/tailwind.css')
+    c.run('tailwindcss -c templates/tailwind.config.js -i templates/tailwind.css -o static/css/tailwind.css')

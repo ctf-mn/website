@@ -1,18 +1,18 @@
 %extends 'Layout.html'
 
 %block content
-  <div class="border shadow  bg-white mt-4 p-4 rounded">
-    <div class="flex justify-between border-b pb-2 mb-2">
+  <div class="border dark:border-slate-700 shadow bg-white dark:bg-slate-800 mt-4 p-4 rounded">
+    <div class="flex justify-between border-b dark:border-slate-700 pb-2 mb-2">
       <div class="text-xl font-medium">
         {{ contest.title }}
       </div>
-      <div class="text-gray-500">
+      <div class="text-gray-500 dark:text-slate-300">
         {{ (contest.start_at + g.timezone_fix).strftime('%a, %b %d. %Y, %H:%M ULAT') }}
         &mdash;
         {{ (contest.finish_at + g.timezone_fix).strftime('%a, %b %d. %Y, %H:%M ULAT') }}
       </div>
     </div>
-    <div class="text-slate-500 mb-4 flex justify-between">
+    <div class="text-slate-500 dark:text-slate-300 mb-4 flex justify-between">
       <div class="">
         <a href="/contest/{{ contest.id }}" class="x-link">Scoreboard</a>
         &middot;
@@ -25,11 +25,11 @@
           &middot;
           %if now < contest.start_at
             %set until_start = contest.start_at - now
-            Тэмцээн эхлэхэд <span class="text-green-600 font-medium">{{ until_start.seconds // 3600 }} цаг {{ until_start.seconds % 3600 // 60 }}</span> минут үлдлээ
+            Тэмцээн эхлэхэд <span class="text-green-600 dark:text-green-300 font-medium">{{ until_start.seconds // 3600 }} цаг {{ until_start.seconds % 3600 // 60 }}</span> минут үлдлээ
           %endif
           %if contest.start_at < now < contest.finish_at
             %set until_finish = contest.finish_at - now
-            Тэмцээн дуусахад <span class="text-red-600 font-medium">{{ until_finish.seconds // 3600 }} цаг {{ until_finish.seconds % 3600 // 60 }} минут</span> үлдсэн
+            Тэмцээн дуусахад <span class="text-red-600 dark:text-red-300 font-medium">{{ until_finish.seconds // 3600 }} цаг {{ until_finish.seconds % 3600 // 60 }} минут</span> үлдсэн
           %endif
           %if contest.finish_at < now
             Тэмцээн дууссан
@@ -38,9 +38,9 @@
       </div>
       <div>
         %if g.user and g.contest_team
-          Team: <b class="text-black">{{ g.contest_team.title }}</b>
+          Team: <b class="text-black dark:text-slate-100">{{ g.contest_team.title }}</b>
         %else
-          {# <a href="/contest/{{ contest.id }}" class="x-link !text-orange-600">Register</a> #}
+          {# <a href="/contest/{{ contest.id }}" class="x-link text-orange-600 dark:text-orange-300">Register</a> #}
         %endif
       </div>
     </div>
@@ -67,7 +67,7 @@
         </ul>
 
         %if g.user and g.contest_team
-          <div class="mt-4 border border-red-300 rounded p-4 bg-red-50 gap-6">
+          <div class="mt-4 border dark:border-slate-700 border-red-300 rounded p-4 bg-red-50 dark:bg-red-900/25 gap-6">
             Attack Defense platform: https://ctf-course-6c302f2fb613.herokuapp.com/
             <br>
             Багийн нууц үг: "{{ g.contest_team.service }}"
@@ -98,7 +98,7 @@
         </ul>
 
         %if g.user and g.contest_team
-          <div class="mt-4 border border-red-300 rounded p-4 bg-red-50 gap-6">
+          <div class="mt-4 border dark:border-slate-700 border-red-300 rounded p-4 bg-red-50 dark:bg-red-900/25 gap-6">
             Attack Defense platform: https://attack-defense-f5f2bf5a4fb3.herokuapp.com/
             <br>
             Багийн нууц үг: "{{ g.contest_team.service }}"
@@ -120,8 +120,8 @@
   </div>
 
   % if contest.id == 5
-    <div class="border shadow  bg-white mt-4 rounded p-4">
-      <h1 class="text-center text-xl text-orange-500 mb-4"><b>Тэмцээнд бүртгүүлэх</b></h1>
+    <div class="border dark:border-slate-700 shadow bg-white dark:bg-slate-800 mt-4 rounded p-4">
+      <h1 class="text-center text-xl text-orange-500 dark:text-orange-300 mb-4"><b>Тэмцээнд бүртгүүлэх</b></h1>
       <div class="prose max-w-none" data-markdown-content>
         {{- '' -}}
         5-р сарын 17-нд онлайнаар “**Jeopardy**” төрлөөр болно. Бүх хүнд нээлттэй.
@@ -140,16 +140,16 @@
       </div>
       <Form action='/contest/'~contest.id>
         <Input name="title" label="Багийн нэр" />
-        <div class="bg-yellow-100 mt-4 mb-4 border border-yellow-300 rounded p-4 text-sm">
-          <div class="font-bold text-yellow-900 mb-4">Төлбөр шилжүүлэх</div>
+        <div class="bg-yellow-100 dark:bg-yellow-900/25 mt-4 mb-4 border dark:border-slate-700 border-yellow-300 rounded p-4 text-sm">
+          <div class="font-bold text-yellow-900 dark:text-yellow-100 mb-4">Төлбөр шилжүүлэх</div>
           <div class="my-1"><span class="font-bold">Данс (IBAN):</span> MN16 0004000 453134783. Мөнхбаатар</div>
           <div class="my-1"><span class="font-bold">Данс:</span> Худалдаа хөгжлийн банк. 453134783. Мөнхбаатар</div>
           <div class="my-1"><span class="font-bold">Шилжүүлэх дүн:</span> 60’000 төгрөг</div>
           <div class="my-1"><span class="font-bold">Гүйлгээний утга:</span> CTF, [багийн нэр]</div>
         </div>
         <div class="flex items-center mb-6">
-          <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" required>
-          <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900">Төлбөрийг шилжүүлсэн</label>
+          <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 dark:text-blue-300 bg-gray-100 dark:bg-slate-900 border-gray-300 dark:border-slate-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2" required>
+          <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-slate-100">Төлбөрийг шилжүүлсэн</label>
         </div>
 
         <Submit label="Бүртгүүлэх" />

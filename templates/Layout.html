@@ -1,6 +1,6 @@
 %import 'Macros.html' as ui with context
 <!doctype html>
-<html class="bg-gray-100">
+<html class="min-h-screen">
 <head>
   <meta charset="utf-8">
   <title>{{ title }}</title>
@@ -9,15 +9,22 @@
     .prose p {
       white-space: pre-line;
     }
+
+    .theme-transition,
+    .theme-transition * {
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-duration: 180ms;
+      transition-timing-function: ease-in-out;
+    }
   </style>
 </head>
-<body>
-  <header class="bg-white border-b py-3 h-16">#:1
-    <div class="max-w-5xl mx-auto w-full h-full flex items-center justify-between  px-4">
+<body class="min-h-screen bg-gray-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100 theme-transition">
+  <header class="bg-white dark:bg-slate-800 border-b dark:border-slate-700 py-3 h-16">#:1
+    <div class="max-w-5xl mx-auto w-full h-full flex items-center justify-between px-4">
       <a class="text-xl font-semibold" href="/">CTF.mn</a>
       <div class="flex gap-5">
         {#
-        <a class="x-link !text-orange-600" href="/contest/5">
+        <a class="x-link text-orange-600 dark:text-orange-300" href="/contest/5">
           Contest
         </a>
         #}
@@ -27,7 +34,7 @@
         &middot;
         %if session['user']
           <span>
-            <span class="text-gray-500">Welcome</span>
+            <span class="text-gray-500 dark:text-slate-300">Welcome</span>
             <span class="font-semibold">{{ g.user.name }}</span>
           </span>
           <Form action='/logout'>
@@ -37,6 +44,9 @@
           <a class="x-link" href="/login">Login</a>
           <a class="x-link" href="/register">Register</a>
         %endif
+        <button id="theme-toggle" type="button" class="x-link" aria-label="Theme: System">
+          Theme
+        </button>
       </div>
     </div>
   </header>#:endfold
@@ -48,6 +58,7 @@
 
   <script src="/static/js/jquery-v3.7.0.min.js"></script>
   <script src="/static/js/marked-v12.0.2.min.js"></script>
+  <script src="/static/js/theme-toggle.js"></script>
   <script>
     $(function() {
       if ($('[data-markdown-content]').length && $('[data-markdown-content]').prop('data-markdown-content') !== false) {

@@ -3,10 +3,10 @@
 
 %block card
   <h1 class="text-xl font-semibold mt-4">Scoreboard</h1>
-  <div class="border shadow rounded mt-4">
-    <table class="bg-white w-full rounded">
+  <div class="border dark:border-slate-700 shadow rounded mt-4">
+    <table class="bg-white dark:bg-slate-800 w-full rounded">
       <thead>
-        <tr class="h-12 text-left bg-slate-50">
+        <tr class="h-12 text-left bg-slate-50 dark:bg-slate-800">
           <th class="rounded-tl pl-3" style="width:50px"></th>
           <th class="text-left" style="">Team</th>
           <th class="text-left" style="">Members</th>
@@ -16,21 +16,21 @@
       </thead>
       <tbody>
         %if contest.finish_at - timedelta(hours=1) < now < contest.finish_at
-          <tr class="border-t">
-            <td class="text-center h-12 text-gray-400 text-sm" colspan="4">
-              <span class="text-red-500">Scoreboard frozen.</span>
+          <tr class="border-t dark:border-slate-700">
+            <td class="text-center h-12 text-gray-400 dark:text-slate-500 text-sm" colspan="4">
+              <span class="text-red-500 dark:text-red-300">Scoreboard frozen.</span>
             </td>
           </tr>
         %else
           %for team in teams
-            <tr class="h-12 border-t">
-              <td class="pl-3 pr-3 text-right text-gray-500 {{- ' rounded-bl' if loop.last }}">
+            <tr class="h-12 border-t dark:border-slate-700">
+              <td class="pl-3 pr-3 text-right text-gray-500 dark:text-slate-300 {{- ' rounded-bl' if loop.last }}">
                 {{ loop.index }}.
               </td>
               <td>
                 <span>{{ team.title }}</span>
                 %if team.status == 'DRAFT'
-                  <span class="text-red-600">(Баталгаажаагүй)</span>
+                  <span class="text-red-600 dark:text-red-300">(Баталгаажаагүй)</span>
                 %endif
               </td>
               <td>
@@ -41,7 +41,7 @@
                   %endfor
                 %endif
               </td>
-              <td class="text-gray-500 text-sm text-right">
+              <td class="text-gray-500 dark:text-slate-300 text-sm text-right">
                 %if team.last_solved_at
                   ({{ team.solved_count }} solves)
                   {{ (team.last_solved_at + g.timezone_fix).strftime('%Y-%m-%d %H:%M:%S') }}
